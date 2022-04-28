@@ -53,7 +53,7 @@ pipeline {
           steps {
              script {
                sh '''
-                   echo DOCKERHUB_PASSWORD | docker login -u rhardala --password-stdin
+                   echo $DOCKERHUB_PASSWORD | docker login -u rhardala --password-stdin
                    docker push rhardala/$IMAGE_NAME:$IMAGE_TAG
                '''
              }
