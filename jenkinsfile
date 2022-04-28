@@ -1,9 +1,10 @@
 pipeline {
      environment {
+       ID_DOCKER = "rhardala"
        IMAGE_NAME = "alpinehelloworld"
        IMAGE_TAG = "latest"
-       STAGING = "rhardala-staging"
-       PRODUCTION = "rhardala-production"
+       STAGING = "${ID_DOCKER}-staging"
+       PRODUCTION = "${ID_DOCKER}-production"
      }
      agent none
      stages {
@@ -11,7 +12,7 @@ pipeline {
              agent any
              steps {
                 script {
-                  sh 'docker build -t rhardala/$IMAGE_NAME:$IMAGE_TAG .'
+                  sh 'docker build -t ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG .'
                 }
              }
         }
@@ -20,7 +21,7 @@ pipeline {
             steps {
                script {
                  sh '''
-                    docker run --name $IMAGE_NAME -d -p 80:5000 -e PORT=5000 rhardala/$IMAGE_NAME:$IMAGE_TAG
+                    docker run --name $IMAGE_NAME -d -p 80:5000 -e PORT=5000 ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG
                     sleep 5
                  '''
                }
