@@ -48,6 +48,17 @@ pipeline {
              }
           }
      }
+                stage ('Login and Push Image on docker hub') {
+          agent any
+          steps {
+             script {
+               sh '''
+                   echo DOCKERHUB_PASSWORD | docker login -u rhardala --password-stdin
+                   docker push rhardala/$IMAGE_NAME:$IMAGE_TAG
+               '''
+             }
+          }
+      }
      stage('Push image in staging and deploy it') {
        when {
               expression { GIT_BRANCH == 'origin/master' }
