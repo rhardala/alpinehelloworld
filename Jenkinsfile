@@ -5,6 +5,7 @@ pipeline {
        IMAGE_TAG = "latest"
        STAGING = "${ID_DOCKER}-staging"
        PRODUCTION = "${ID_DOCKER}-production"
+       DOCKERHUB_PASSWORD = credentials('DOCKERHUB_PASSWORD')
      }
      agent none
      stages {
@@ -48,13 +49,13 @@ pipeline {
              }
           }
      }
-                stage ('Login and Push Image on docker hub') {
+        stage ('Login and Push Image on docker hub') {
           agent any
           steps {
              script {
                sh '''
-                   echo $DOCKERHUB_PASSWORD | docker login -u rhardala --password-stdin
-                   docker push rhardala/$IMAGE_NAME:$IMAGE_TAG
+                   echo $DOCKERHUB_PASSWORD | docker login -u $ID_DOCKER --password-stdin
+                   docker push $ID_DOCKER/$IMAGE_NAME:$IMAGE_TAG
                '''
              }
           }
